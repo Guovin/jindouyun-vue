@@ -38,6 +38,7 @@ export default {
       this.password = val
     },
   },
+
   methods: {
     login() {
       let that = this
@@ -62,7 +63,7 @@ export default {
               //提交修改token,注意authorization小写
               let Authorization = response.headers.authorization
               that.$store.commit('ChangeToken', Authorization)
-              that.$router.push('about')
+              that.$router.push('/')
             } else {
               that.lg_loading = false
               that.success = false

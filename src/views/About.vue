@@ -1,7 +1,8 @@
 <template>
   <div class="about">
-    <h2>{{user}},你好</h2>
-    <h1>{{ message }}</h1>
+    <h1 id="title">筋斗云管理系统</h1>
+    <h2 id="hello">{{ username }},您好</h2>
+    <h1 id="message">{{ message }}</h1>
     <a-button :loading="lg_loading" id="logout_button" type="button" @click="logout">注销</a-button>
   </div>
 </template>
@@ -11,21 +12,14 @@ export default {
   name: 'about',
   data() {
     return {
-      user: null,
       message: 'Welcome to Jindouyun!',
       lg_loading: false,
     }
   },
-  mounted() {
-    let that = this
-    this.$axios({
-      method: 'get',
-      url: '/user',
-    }).then(function (response) {
-      if (response.status == 200) {
-        that.user = response.data.name
-      }
-    })
+  computed: {
+    username() {
+      return this.$store.getters.getuser
+    },
   },
   methods: {
     logout() {
@@ -40,6 +34,7 @@ export default {
             //修改store的authorization为空并清除token
             that.$store.commit('ChangeToken', response.headers.authorization)
             localStorage.removeItem('Authorization')
+            that.$store.commit('ChangeUser', '')
             that.lg_loading = false
             that.$router.push('/login')
           } else {
@@ -53,3 +48,19 @@ export default {
   },
 }
 </script>
+<style lang="less">
+#title {
+  font-size: 45px;
+  font-weight: 800;
+  text-align: center;
+}
+#hello {
+  font-size: 25px;
+  text-align: center;
+}
+
+#message {
+  font-size: 20px;
+  text-align: center;
+}
+</style>

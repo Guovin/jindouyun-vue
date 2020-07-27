@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Jindouyun logo" src="../assets/logo.png">
-    <Login msg="Welcome to Jindouyun"/>
+    <img alt="Jindouyun logo" src="../assets/logo.png" />
+    <Login msg="Welcome to Jindouyun" />
   </div>
 </template>
 
@@ -12,16 +12,17 @@ import Login from '@/components/Login.vue'
 export default {
   name: 'Home',
   components: {
-    Login
-  }
+    Login,
+  },
 }
 </script>
 
 <style lang="less">
-.home{
+.home {
   position: fixed;
-  width:100%;
+  width: 100%;
   height: 100%;
   background-color: #2d3a4b;
+  text-align: center;
 }
 </style>
