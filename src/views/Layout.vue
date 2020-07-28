@@ -6,7 +6,7 @@
         <a-menu-item v-for="item in menu" :key="item.index" :index="item.index">
           <a-icon :type="item.type" />
           <span>{{ item.title }}</span>
-          <router-link :to="item.path">{{ item.title }}</router-link>
+          <router-link :to="item.path"></router-link>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -23,13 +23,16 @@
               <a-icon type="user" />
               {{ username }}
             </span>
-            <a-menu-item-group title="Item 1">
-              <a-menu-item key="setting:1">Option 1</a-menu-item>
-              <a-menu-item key="setting:2">Option 2</a-menu-item>
-            </a-menu-item-group>
-            <a-menu-item-group title="Item 2">
-              <a-menu-item key="setting:3">Option 3</a-menu-item>
-              <a-menu-item key="setting:4">Option 4</a-menu-item>
+            <a-menu-item-group title="欢迎使用">
+              <a-menu-item v-for="option in options" :key="option.index">
+                <a-icon :type="option.type" />
+                <span>{{ option.title }}</span>
+                <router-link :to="option.path"></router-link>
+              </a-menu-item>
+              <a-menu-item key="3" @click="logout">
+                <a-icon type="logout" />
+                <span>注销</span>
+              </a-menu-item>
             </a-menu-item-group>
           </a-sub-menu>
         </a-menu>
@@ -49,9 +52,13 @@ export default {
       collapsed: false,
       menu: [
         { title: '首页', path: '/main', type: 'home', index: '1' },
-        { title: '公司', path: '/company', type: 'home', index: '2' },
+        { title: '公司', path: '/company', type: 'shop', index: '2' },
         { title: '员工', path: '/staff', type: 'team', index: '3' },
         { title: '订单', path: '/order', type: 'shopping', index: '4' },
+      ],
+      options: [
+        { title: '个人中心', path: '/center', type: 'user', index: '1' },
+        { title: '设置', path: '/setting', type: 'setting', index: '2' },
       ],
     }
   },
@@ -69,6 +76,43 @@ export default {
   computed: {
     username() {
       return this.$store.getters.getuser
+    },
+  },
+  methods: {
+    logout() {
+      let that = this
+      this.$confirm({
+        title: '您确定要进行注销操作吗?',
+        content: '退出登陆状态',
+        okText: '确认',
+        cancelText: '取消',
+        onOk() {
+          that
+            .$axios({
+              method: 'get',
+              url: '/logout',
+            })
+            .then(function (response) {
+              if (response.data == 200) {
+                //修改store的authorization为空并清除token
+                that.$store.commit(
+                  'ChangeToken',
+                  response.headers.authorization
+                )
+                localStorage.removeItem('Authorization')
+                that.$store.commit('ChangeUser', '')
+                that.$router.push('/login')
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        },
+        onCancel() {
+          // console.log('Cancel')
+        },
+        class: 'test',
+      })
     },
   },
 }
@@ -96,5 +140,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.ant-layout {
+  min-height: 100%;
 }
 </style>

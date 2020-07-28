@@ -16,6 +16,7 @@ import {
   Col,
   Card,
   Statistic,
+  Modal,
 } from 'ant-design-vue'
 
 Vue.component(Button.name, Button)
@@ -39,6 +40,8 @@ Vue.component(Statistic.name, Statistic)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
+Vue.prototype.$confirm = Modal.confirm
+Vue.use(Modal)
 
 axios.defaults.baseURL = 'http://localhost:8199'
 global.axios = axios
