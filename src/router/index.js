@@ -46,7 +46,7 @@ const routes = [
     path: '/staff',
     name: 'Staff',
     component: Layout,
-    redirect: '/staff/index', //需要重定向子路径才能正常显示
+    redirect: '/staff/index',
     children: [
       {
         path: 'index',
@@ -59,11 +59,24 @@ const routes = [
     path: '/order',
     name: 'Order',
     component: Layout,
-    redirect: '/order/index', //需要重定向子路径才能正常显示
+    redirect: '/order/index',
     children: [
       {
         path: 'index',
         component: () => import('@/views/Order.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: Layout,
+    redirect: '/setting/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/NewPassword.vue'),
       },
     ],
   },

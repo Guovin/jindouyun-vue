@@ -20,7 +20,7 @@
         <a-menu class="right" mode="horizontal">
           <a-sub-menu>
             <span slot="title" class="submenu-title-wrapper">
-              <a-icon type="user" />
+              <a-avatar icon="user" class="avatar" />
               {{ username }}
             </span>
             <a-menu-item-group title="欢迎使用">
@@ -144,5 +144,10 @@ export default {
 
 .ant-layout {
   min-height: 100%;
+}
+
+.avatar .anticon {
+  margin-right: 0;
+  font-size: 18px;
 }
 </style>

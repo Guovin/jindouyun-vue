@@ -17,6 +17,8 @@ import {
   Card,
   Statistic,
   Modal,
+  Avatar,
+  Form,
 } from 'ant-design-vue'
 
 Vue.component(Button.name, Button)
@@ -37,6 +39,9 @@ Vue.component(Row.name, Row)
 Vue.component(Col.name, Col)
 Vue.component(Card.name, Card)
 Vue.component(Statistic.name, Statistic)
+Vue.component(Avatar.name, Avatar)
+Vue.component(Form.name, Form)
+Vue.component(Form.Item.name, Form.Item)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
