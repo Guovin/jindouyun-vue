@@ -57,8 +57,8 @@ export default {
         { title: '订单', path: '/order', type: 'shopping', index: '4' },
       ],
       options: [
-        { title: '个人中心', path: '/center', type: 'user', index: '1' },
-        { title: '设置', path: '/setting', type: 'setting', index: '2' },
+        { title: '个人中心', path: '/main', type: 'user', index: '1' },
+        { title: '修改密码', path: '/setting', type: 'setting', index: '2' },
       ],
     }
   },
