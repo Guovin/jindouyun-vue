@@ -1,6 +1,16 @@
 <template>
   <div>
     <a-button class="editable-add-btn" @click="handleAdd">Add</a-button>
+    <a-popconfirm
+      v-if="dataSource.length"
+      title="您确定要保存所有记录吗?"
+      ok-text="是"
+      cancel-text="否"
+      @confirm="() => handleSave()"
+    >
+      <a-icon slot="icon" type="question-circle-o" style="color: red" />
+      <a-button class="editable-save-btn">Save</a-button>
+    </a-popconfirm>
     <a-table bordered :data-source="dataSource" :columns="columns">
       <template slot="name" slot-scope="text, record">
         <editable-cell
@@ -23,16 +33,22 @@
       <template slot="operation" slot-scope="text, record">
         <a-popconfirm
           v-if="dataSource.length"
-          title="Sure to delete?"
+          title="您确定要删除此条记录吗?"
+          ok-text="是"
+          cancel-text="否"
           @confirm="() => onDelete(record.key)"
         >
+          <a-icon slot="icon" type="question-circle-o" style="color: red" />
           <a href="javascript:;">Delete</a>
         </a-popconfirm>
         <a-popconfirm
           v-if="dataSource.length"
-          title="Sure to save?"
+          title="您确定要保存此条记录吗?"
+          ok-text="是"
+          cancel-text="否"
           @confirm="() => onSave(record.key)"
         >
+          <a-icon slot="icon" type="question-circle-o" style="color: red" />
           <a href="javascript:;" id="save">Save</a>
         </a-popconfirm>
       </template>
@@ -151,8 +167,11 @@ export default {
       }
     },
     onDelete(key) {
+      this.$message.loading('删除中...')
       const dataSource = [...this.dataSource]
+      const { count } = this
       this.dataSource = dataSource.filter((item) => item.key !== key)
+      let that = this
       this.$axios({
         method: 'post',
         url: '/deleteStaff',
@@ -162,17 +181,21 @@ export default {
       })
         .then(function(response) {
           if (response.data == 200) {
-            console.log('删除成功！')
+            that.$message.success('删除成功')
+            that.count = count - 1
           } else {
-            console.log('出错！')
+            that.$message.error('删除失败')
           }
         })
         .catch((error) => {
           console.log(error)
+          that.$message.error('删除失败')
         })
     },
     onSave(key) {
       const dataSource = [...this.dataSource].filter((item) => item.key == key)
+      this.$message.loading('保存中...')
+      let that = this
       this.$axios({
         method: 'post',
         url: '/updateStaff',
@@ -185,26 +208,50 @@ export default {
       })
         .then(function(response) {
           if (response.data == 201) {
-            console.log('保存成功！')
+            that.$message.success('保存成功')
           } else {
-            console.log('出错！')
+            that.$message.error('保存失败')
           }
         })
         .catch((error) => {
           console.log(error)
+          that.$message.error('保存失败')
         })
     },
     handleAdd() {
       const { count, dataSource } = this
       const newData = {
-        key: count + 1,
-        id: count + 1,
+        key: `${count + 1}`,
+        id: `${count + 1}`,
         name: `Edward King ${count + 1}`,
         age: '32',
         address: `London, Park Lane no. ${count + 1}`,
       }
       this.dataSource = [...dataSource, newData]
       this.count = count + 1
+    },
+    handleSave() {
+      const { dataSource } = this
+      let that = this
+      this.$message.loading('保存中...')
+      this.$axios({
+        method: 'post',
+        url: '/saveStaff',
+        data: {
+          source: dataSource,
+        },
+      })
+        .then(function(response) {
+          if (response.data == 201) {
+            that.$message.success('保存成功')
+          } else {
+            that.$message.error('保存失败')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          that.$message.error('保存失败')
+        })
     },
   },
 }
@@ -251,6 +298,11 @@ export default {
 
 .editable-add-btn {
   margin-bottom: 8px;
+}
+
+.editable-save-btn {
+  margin-bottom: 8px;
+  margin-left: 92.7%;
 }
 
 #save {

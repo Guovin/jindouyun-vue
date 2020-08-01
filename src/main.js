@@ -19,6 +19,7 @@ import {
   Modal,
   Avatar,
   Form,
+  message,
 } from 'ant-design-vue'
 
 Vue.component(Button.name, Button)
@@ -45,8 +46,17 @@ Vue.component(Form.Item.name, Form.Item)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
+
 Vue.prototype.$confirm = Modal.confirm
 Vue.use(Modal)
+
+Vue.prototype.$message = message
+
+message.config({
+  duration: 2, // 持续时间
+  // top: `100px`, // 到页面顶部距离
+  maxCount: 1, // 最大显示数, 超过限制时，最早的消息会被自动关闭
+})
 
 axios.defaults.baseURL = 'http://localhost:8199'
 global.axios = axios
