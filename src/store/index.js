@@ -1,31 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import getters from './getters'
+import user from './modules/user'
+import token from './modules/token'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  //储存token
-  state: {
-    Authorization: localStorage.getItem('Authorization')
-      ? localStorage.getItem('Authorization')
-      : '',
-    User: null,
+const store = new Vuex.Store({
+  modules: {
+    user,
+    token,
   },
-  //修改token
-  mutations: {
-    ChangeToken(state, Authorization) {
-      state.Authorization = Authorization
-      localStorage.setItem('Authorization', Authorization)
-    },
-    ChangeUser(state, User) {
-      state.User = User
-    },
-  },
-  getters: {
-    getuser: (state) => {
-      return state.User
-    },
-  },
-  actions: {},
-  modules: {},
+  getters,
 })
+
+export default store

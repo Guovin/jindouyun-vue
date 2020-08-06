@@ -38,7 +38,12 @@
         </a-menu>
       </a-layout-header>
       <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
+        :style="{
+          margin: '24px 16px',
+          padding: '24px',
+          background: '#fff',
+          minHeight: '280px',
+        }"
       >
         <router-view />
       </a-layout-content>
@@ -63,15 +68,7 @@ export default {
     }
   },
   created() {
-    let that = this
-    this.$axios({
-      method: 'get',
-      url: '/user',
-    }).then(function (response) {
-      if (response.status == 200) {
-        that.$store.commit('ChangeUser', response.data.name)
-      }
-    })
+    this.$store.dispatch('GetUser')
   },
   computed: {
     username() {
@@ -87,22 +84,10 @@ export default {
         okText: '确认',
         cancelText: '取消',
         onOk() {
-          that
-            .$axios({
-              method: 'get',
-              url: '/logout',
-            })
-            .then(function (response) {
-              if (response.data == 200) {
-                //修改store的authorization为空并清除token
-                that.$store.commit(
-                  'ChangeToken',
-                  response.headers.authorization
-                )
-                localStorage.removeItem('Authorization')
-                that.$store.commit('ChangeUser', '')
-                that.$router.push('/login')
-              }
+          that.$store
+            .dispatch('LogOut')
+            .then(() => {
+              that.$router.push('/login')
             })
             .catch((error) => {
               console.log(error)

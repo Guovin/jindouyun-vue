@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Layout from '../views/Layout.vue'
+import { getToken } from '@/utils/auth'
 
 Vue.use(VueRouter)
 
@@ -94,9 +95,13 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     next()
   } else {
-    let Authorization = localStorage.getItem('Authorization')
+    let Authorization = getToken()
     //注意是全等===
-    if (Authorization === null || Authorization === '') {
+    if (
+      Authorization === null ||
+      Authorization === '' ||
+      Authorization === undefined
+    ) {
       next('/login')
     } else {
       next()

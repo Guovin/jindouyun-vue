@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import { getStaff, deleteStaff, updateStaff, saveStaff } from '@/api/staff'
 const EditableCell = {
   template: `
       <div class="editable-cell">
@@ -103,10 +104,7 @@ export default {
     var source = []
     var newcount = 0
     let that = this
-    this.$axios({
-      method: 'get',
-      url: '/selectStaff',
-    })
+    getStaff()
       .then(function(response) {
         for (var i = 0; i < response.data.length; i++) {
           let s = {
@@ -172,13 +170,7 @@ export default {
       const { count } = this
       this.dataSource = dataSource.filter((item) => item.key !== key)
       let that = this
-      this.$axios({
-        method: 'post',
-        url: '/deleteStaff',
-        data: {
-          id: key,
-        },
-      })
+      deleteStaff(key)
         .then(function(response) {
           if (response.data == 200) {
             that.$message.success('删除成功')
@@ -196,16 +188,12 @@ export default {
       const dataSource = [...this.dataSource].filter((item) => item.key == key)
       this.$message.loading('保存中...')
       let that = this
-      this.$axios({
-        method: 'post',
-        url: '/updateStaff',
-        data: {
-          id: key,
-          name: dataSource[0].name,
-          age: dataSource[0].age,
-          address: dataSource[0].address,
-        },
-      })
+      updateStaff(
+        key,
+        dataSource[0].name,
+        dataSource[0].age,
+        dataSource[0].address
+      )
         .then(function(response) {
           if (response.data == 201) {
             that.$message.success('保存成功')
@@ -234,13 +222,7 @@ export default {
       const { dataSource } = this
       let that = this
       this.$message.loading('保存中...')
-      this.$axios({
-        method: 'post',
-        url: '/saveStaff',
-        data: {
-          source: dataSource,
-        },
-      })
+      saveStaff(dataSource)
         .then(function(response) {
           if (response.data == 201) {
             that.$message.success('保存成功')
