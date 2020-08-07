@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { updatePassword } from '@/api/login'
 export default {
   data() {
     return {
@@ -86,13 +87,7 @@ export default {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          this.$axios({
-            method: 'post',
-            url: '/updatePassword',
-            data: {
-              password: values.password,
-            },
-          })
+          updatePassword(values.password)
             .then(function (response) {
               if (response.data == 201) {
                 that.success = true

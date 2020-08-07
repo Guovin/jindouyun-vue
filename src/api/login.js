@@ -27,3 +27,14 @@ export function logOut() {
     url: '/logout',
   })
 }
+
+//修改密码
+export function updatePassword(password) {
+  return request({
+    method: 'post',
+    url: '/updatePassword',
+    data: {
+      password: password,
+    },
+  })
+}
