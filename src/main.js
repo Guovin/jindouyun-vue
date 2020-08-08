@@ -48,6 +48,7 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 
 Vue.prototype.$confirm = Modal.confirm
+Vue.prototype.$error = Modal.error
 Vue.use(Modal)
 
 Vue.prototype.$message = message

@@ -3,7 +3,7 @@
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <div class="logo" />
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
-        <a-menu-item v-for="item in menu" :key="item.index" :index="item.index">
+        <a-menu-item v-for="item in menu" :key="item.index" :index="item.index" @click="check">
           <a-icon :type="item.type" />
           <span>{{ item.title }}</span>
           <router-link :to="item.path"></router-link>
@@ -24,7 +24,7 @@
               {{ username }}
             </span>
             <a-menu-item-group title="欢迎使用">
-              <a-menu-item v-for="option in options" :key="option.index">
+              <a-menu-item v-for="option in options" :key="option.index" @click="check">
                 <a-icon :type="option.type" />
                 <span>{{ option.title }}</span>
                 <router-link :to="option.path"></router-link>
@@ -51,6 +51,7 @@
   </a-layout>
 </template>
 <script>
+import { removeToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -97,6 +98,17 @@ export default {
           // console.log('Cancel')
         },
         class: 'test',
+      })
+    },
+
+    check() {
+      this.$store.dispatch('GetUser').catch(() => {
+        this.$error({
+          title: '登陆已过期',
+          content: '请重新登陆！',
+        })
+        removeToken()
+        this.$router.push('/login')
       })
     },
   },

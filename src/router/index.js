@@ -90,7 +90,7 @@ const router = new VueRouter({
 })
 
 //导航守卫
-//使用router.beforeEach注册一个全局前置守卫，判断用户是否登录
+//使用router.beforeEach注册一个全局前置守卫，判断用户登陆状态是否过期
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     next()

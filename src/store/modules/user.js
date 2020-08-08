@@ -37,7 +37,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getUser()
           .then((response) => {
-            if (response.status == 200) {
+            if (response.status == 200 && response.data.name != null) {
               commit('ChangeUser', response.data.name)
               resolve()
             } else {
